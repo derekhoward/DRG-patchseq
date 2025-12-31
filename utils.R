@@ -1,6 +1,6 @@
 suppressPackageStartupMessages({
   library(here)
-  library(biomaRt)
+  # library(biomaRt)
   library(Seurat)
   library(readr)
   library(dplyr)
@@ -43,9 +43,9 @@ prep_patchseq_obj_all_batches <- function(convert_genes = "pig") {
     
     pig_counts <- pig_counts[, c("ensembl_id", sampleIDs)]
     
-    pigMart <- useMart("ensembl", dataset = "sscrofa_gene_ensembl") # ,host = "https://dec2021.archive.ensembl.org/")
+    pigMart <- biomaRt::useMart("ensembl", dataset = "sscrofa_gene_ensembl") # ,host = "https://dec2021.archive.ensembl.org/")
     # find gene symbols for ENSSSG where possible
-    gene_conversion <- getBM(filters = "ensembl_gene_id", attributes = c("ensembl_gene_id", "external_gene_name"), values = pig_counts$ensembl_id, mart = pigMart)
+    gene_conversion <- biomaRt::getBM(filters = "ensembl_gene_id", attributes = c("ensembl_gene_id", "external_gene_name"), values = pig_counts$ensembl_id, mart = pigMart)
     # fill empty values of gene symbol with NA
     gene_conversion <- mutate_at(gene_conversion, .vars = "external_gene_name", .funs = ~ na_if(., ""))
     # use gene_symbol if possible, else use ENSSSCG
@@ -97,7 +97,7 @@ prep_patchseq_obj_all_batches <- function(convert_genes = "pig") {
     
     pigMart <- useMart("ensembl", dataset = "sscrofa_gene_ensembl") # ,host = "https://dec2021.archive.ensembl.org/")
     humanMart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl") # ,host = "https://dec2021.archive.ensembl.org/")
-    genesV2 <- getLDS(
+    genesV2 <- biomaRt::getLDS(
       attributes = c("ensembl_gene_id"), filters = "ensembl_gene_id", values = pig_counts$ensembl_id,
       mart = pigMart, attributesL = c("hgnc_symbol"), martL = humanMart, uniqueRows = T
     )
@@ -157,7 +157,7 @@ prep_patchseq_obj_all_batches <- function(convert_genes = "pig") {
     
     pigMart <- useMart("ensembl", dataset = "sscrofa_gene_ensembl") # ,host = "https://dec2021.archive.ensembl.org/")
     mouseMart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl") # , host = "https://dec2021.archive.ensembl.org/")
-    genesV2 <- getLDS(
+    genesV2 <- biomaRt::getLDS(
       attributes = c("ensembl_gene_id"), filters = "ensembl_gene_id", values = pig_counts$ensembl_id,
       mart = pigMart, attributesL = c("mgi_symbol"), martL = mouseMart, uniqueRows = T
     )
@@ -233,7 +233,7 @@ get_gene_conversion <- function(ensembl_ids, convert_genes) {
     return(conversion[, c("ensembl_gene_id", "merged_symbols")])
   } else {
     targetMart <- useMart("ensembl", dataset = paste0(ifelse(convert_genes == "human", "hsapiens", "mmusculus"), "_gene_ensembl"))
-    conversion <- getLDS(
+    conversion <- biomaRt::getLDS(
       attributes = c("ensembl_gene_id"),
       filters = "ensembl_gene_id",
       values = ensembl_ids,

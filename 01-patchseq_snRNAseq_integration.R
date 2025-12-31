@@ -132,7 +132,8 @@ results <- pseq_neighbours %>%
 
 # Save predictions
 predictions_meta <- results %>%
-  select(cell_id = pseq, labels.p = celltype, type_fraction, confidence, proportion_neighbours_atlas_cells) %>%
+  ungroup() %>%
+  dplyr::select(cell_id = pseq, labels.p = celltype, type_fraction, confidence, proportion_neighbours_atlas_cells) %>%
   as.data.frame()
 
 write_csv(predictions_meta, here(results_path, 'predictions_meta.csv'))
