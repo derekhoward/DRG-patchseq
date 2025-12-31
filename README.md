@@ -1,9 +1,5 @@
 # DRG-patchseq
 
-This repository contains the code and data analysis pipelines for our PatchSeq study on CMi-fibres/sleeping nociceptors of the dorsal root ganglion.
-
-# DRG-patchseq
-
 This repository contains the code and data analysis pipelines for our Patch-seq study on CMi-fibres/sleeping nociceptors of the dorsal root ganglion (DRG).
 
 The analysis scripts should be run in numerical order. Scripts generate outputs that are used by subsequent steps.
