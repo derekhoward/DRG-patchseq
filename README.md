@@ -18,9 +18,3 @@ data/
 ├── summarized_experiments/    # SummarizedExperiment objects for MetaNeighbor
 └── processed/                 # Processed gene lists and ortholog mappings
 ```
-
-## Key Data Files Required
-
-- `data/pig_snRNAseq.RDS` - Pig snRNAseq reference atlas
-- `data/DRG_neurons_complete.Rds` - Cross-species DRG neuron atlas
-- `data/microneurography/` - Microneurography data
